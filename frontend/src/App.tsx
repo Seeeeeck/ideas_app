@@ -1,122 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from 'react';
+import IdeaForm from './components/IdeaForm';
+import IdeaTable from './components/IdeaTable';
+import Pagination from './components/Pagination';
 
-function App() {
-  const [count, setCount] = useState(0)
+const MOCK_IDEAS = [
+  { id: 101, titulo: 'Implementar modo oscuro en la plataforma', fecha: '24/05/2025 14:32' },
+  { id: 102, titulo: 'Notificaciones por correo para nuevas actividades', fecha: '24/05/2025 11:08' },
+  { id: 103, titulo: 'Exportar ideas en formato PDF', fecha: '24/05/2025 09:41' },
+  { id: 104, titulo: 'Agregar etiquetas para filtrar ideas', fecha: '23/05/2025 18:20' },
+  { id: 105, titulo: 'Mejorar la búsqueda de ideas', fecha: '23/05/2025 10:15' },
+];
+
+const PAGE_SIZE = 5;
+
+export default function App() {
+  const [input, setInput] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(MOCK_IDEAS.length / PAGE_SIZE);
+  const ideas = MOCK_IDEAS.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  function handleSubmit() {
+    setInput('');
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={{ maxWidth: '760px', margin: '40px auto', padding: '0 24px', fontFamily: 'Inter, sans-serif' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+        <span style={{ fontSize: '22px' }}>💡</span>
+        <h1 style={{ margin: 0, fontSize: '22px', fontWeight: 700, color: '#0f172a' }}>Ideas</h1>
+      </div>
+      <p style={{ margin: '0 0 20px', fontSize: '14px', color: '#64748b' }}>
+        Comparte tu idea con la comunidad
+      </p>
 
-      <div className="ticks"></div>
+      <IdeaForm value={input} onChange={setInput} onSubmit={handleSubmit} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}>
+        Listado de ideas
+      </h2>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <IdeaTable ideas={ideas} />
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      )}
+    </div>
+  );
 }
-
-export default App
