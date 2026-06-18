@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreIdeaRequest;
 use App\Models\Idea;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class IdeaController extends Controller
 {
-    public function store(Request $request): JsonResponse
+    public function store(StoreIdeaRequest $request): JsonResponse
     {
         try {
-            $idea = Idea::create($request->only(['titulo', 'fecha']));
+            $idea = Idea::create($request->validated());
 
             return response()->json($idea, 201);
         } catch (\Exception $e) {
