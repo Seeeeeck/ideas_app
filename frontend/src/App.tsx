@@ -3,7 +3,7 @@ import IdeaForm from './components/IdeaForm';
 import IdeaTable from './components/IdeaTable';
 import Pagination from './components/Pagination';
 
-const MOCK_IDEAS = [
+const INITIAL_IDEAS = [
   { id: 101, titulo: 'Implementar modo oscuro en la plataforma', fecha: '24/05/2025 14:32' },
   { id: 102, titulo: 'Notificaciones por correo para nuevas actividades', fecha: '24/05/2025 11:08' },
   { id: 103, titulo: 'Exportar ideas en formato PDF', fecha: '24/05/2025 09:41' },
@@ -15,13 +15,18 @@ const PAGE_SIZE = 5;
 
 export default function App() {
   const [input, setInput] = useState('');
+  const [ideas, setIdeas] = useState(INITIAL_IDEAS);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(MOCK_IDEAS.length / PAGE_SIZE);
-  const ideas = MOCK_IDEAS.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const totalPages = Math.ceil(ideas.length / PAGE_SIZE);
+  const pagedIdeas = ideas.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   function handleSubmit() {
     setInput('');
+  }
+
+  function handleDelete(id: number) {
+    setIdeas((prev) => prev.filter((idea) => idea.id !== id));
   }
 
   return (
@@ -40,7 +45,7 @@ export default function App() {
         Listado de ideas
       </h2>
 
-      <IdeaTable ideas={ideas} />
+      <IdeaTable ideas={pagedIdeas} onDelete={handleDelete} />
 
       {totalPages > 1 && (
         <Pagination
