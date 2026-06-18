@@ -27,6 +27,19 @@ class IdeaController extends Controller
         }
     }
 
+    public function destroy(int $id): JsonResponse
+    {
+        try {
+            $idea = Idea::findOrFail($id);
+            $idea->delete();
+
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            \Log::error('Error al eliminar la idea: ' . $e->getMessage());
+            return response()->json(['error' => 'Error al eliminar la idea'], 500);
+        }
+    }
+
     public function store(StoreIdeaRequest $request): JsonResponse
     {
         try {

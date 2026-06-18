@@ -10,3 +10,4 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/ideas', [IdeaController::class, 'index']);
 Route::post('/ideas', [IdeaController::class, 'store']);
+Route::delete('/ideas/{id}', [IdeaController::class, 'destroy']);
