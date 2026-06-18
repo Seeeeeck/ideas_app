@@ -1,0 +1,3 @@
+-Se debe usar Laravel para el backend
+-Se debe usar React para el fron-end
+-Se debe usar Postgresql para la base de datos

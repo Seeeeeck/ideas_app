@@ -1,0 +1,7 @@
+
+El sistema debe permitir el ingreso de ideas
+El sistema debe validar que los carácteres mínimos de la idea deben ser 3
+El sistema debe validar que los carácteres máximos de la idea deben ser de 50
+El sistema debe listar las ideas y si son más de 5 deben estar paginadas
+El sistema debe permitir filtrar ideas por fecha de mas antiguas o de mas nuevas
+El sistema debe listar las ideas con su id , titulo y fecha

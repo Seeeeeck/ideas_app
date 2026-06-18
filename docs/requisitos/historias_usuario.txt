@@ -1,0 +1,4 @@
+Usuario
+
+1.Como usuario quiero hacer post de mis ideas
+2.Como usuario quiero ver mis ideas
