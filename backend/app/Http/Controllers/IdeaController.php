@@ -15,6 +15,7 @@ class IdeaController extends Controller
 
             return response()->json($idea, 201);
         } catch (\Exception $e) {
+            \Log::error('Error al crear la idea: ' . $e->getMessage());
             return response()->json(['error' => 'Error al crear la idea'], 500);
         }
     }
