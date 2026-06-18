@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Idea extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = ['titulo', 'fecha'];
 }
