@@ -12,12 +12,13 @@ class IdeaController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
+            $order = $request->query('order') === 'last' ? 'asc' : 'desc';
             $total = Idea::count();
 
             if ($total > 5) {
-                $ideas = Idea::paginate(5);
+                $ideas = Idea::orderBy('fecha', $order)->paginate(5);
             } else {
-                $ideas = Idea::all();
+                $ideas = Idea::orderBy('fecha', $order)->get();
             }
 
             return response()->json($ideas);
