@@ -13,13 +13,7 @@ class IdeaController extends Controller
     {
         try {
             $order = $request->query('order') === 'last' ? 'asc' : 'desc';
-            $total = Idea::count();
-
-            if ($total > 5) {
-                $ideas = Idea::orderBy('fecha', $order)->paginate(5);
-            } else {
-                $ideas = Idea::orderBy('fecha', $order)->get();
-            }
+            $ideas = Idea::orderBy('fecha', $order)->paginate(5);
 
             return response()->json($ideas);
         } catch (\Exception $e) {

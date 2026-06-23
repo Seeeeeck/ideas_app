@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { useCreateIdea } from '../services/ideaService';
 
 export default function IdeaForm() {
@@ -11,7 +12,7 @@ export default function IdeaForm() {
 
     createIdea(
       { titulo: trimmed, fecha: new Date().toISOString() },
-      { onSuccess: () => setTitulo('') },
+      { onSuccess: () => { setTitulo(''); toast.success('Tu idea se agregó'); } },
     );
   }
 

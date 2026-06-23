@@ -7,6 +7,13 @@ export interface Idea {
   fecha: string;
 }
 
+export interface PaginatedIdeas {
+  data: Idea[];
+  current_page: number;
+  last_page: number;
+  total: number;
+}
+
 export interface CreateIdeaPayload {
   titulo: string;
   fecha: string;
@@ -14,8 +21,8 @@ export interface CreateIdeaPayload {
 
 const QUERY_KEY = ['ideas'];
 
-const fetchIdeas = async (): Promise<Idea[]> => {
-  const { data } = await axiosInstance.get('/ideas');
+const fetchIdeas = async (page: number): Promise<PaginatedIdeas> => {
+  const { data } = await axiosInstance.get('/ideas', { params: { page } });
   return data;
 };
 
@@ -28,10 +35,10 @@ const deleteIdea = async (id: number): Promise<void> => {
   await axiosInstance.delete(`/ideas/${id}`);
 };
 
-export const useIdeas = () =>
-  useQuery<Idea[]>({
-    queryKey: QUERY_KEY,
-    queryFn: fetchIdeas,
+export const useIdeas = (page: number) =>
+  useQuery<PaginatedIdeas>({
+    queryKey: [...QUERY_KEY, page],
+    queryFn: () => fetchIdeas(page),
   });
 
 export const useCreateIdea = () => {
