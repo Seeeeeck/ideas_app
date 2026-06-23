@@ -1,15 +1,12 @@
-type Idea = {
-  id: number;
-  titulo: string;
-  fecha: string;
-};
+import { useIdeas, useDeleteIdea } from '../services/ideaService';
 
-type Props = {
-  ideas: Idea[];
-  onDelete: (id: number) => void;
-};
+export default function IdeaTable() {
+  const { data: ideas = [], isLoading, isError } = useIdeas();
+  const { mutate: deleteIdea } = useDeleteIdea();
 
-export default function IdeaTable({ ideas, onDelete }: Props) {
+  if (isLoading) return <p style={{ color: '#64748b' }}>Cargando ideas...</p>;
+  if (isError) return <p style={{ color: '#ef4444' }}>Error al cargar las ideas.</p>;
+
   return (
     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
       <thead>
@@ -30,7 +27,7 @@ export default function IdeaTable({ ideas, onDelete }: Props) {
             </td>
             <td style={{ ...tdStyle, textAlign: 'center', width: '48px' }}>
               <button
-                onClick={() => onDelete(idea.id)}
+                onClick={() => deleteIdea(idea.id)}
                 style={{
                   background: 'none',
                   border: 'none',

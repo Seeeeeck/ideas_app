@@ -1,17 +1,29 @@
-type Props = {
-  value: string;
-  onChange: (value: string) => void;
-  onSubmit: () => void;
-};
+import { useState } from 'react';
+import { useCreateIdea } from '../services/ideaService';
 
-export default function IdeaForm({ value, onChange, onSubmit }: Props) {
+export default function IdeaForm() {
+  const [titulo, setTitulo] = useState('');
+  const { mutate: createIdea, isPending } = useCreateIdea();
+
+  function handleSubmit() {
+    const trimmed = titulo.trim();
+    if (!trimmed) return;
+
+    createIdea(
+      { titulo: trimmed, fecha: new Date().toISOString() },
+      { onSuccess: () => setTitulo('') },
+    );
+  }
+
   return (
     <div style={{ display: 'flex', gap: '12px', marginBottom: '32px' }}>
       <input
         type="text"
         placeholder="Escribe tu idea aquí..."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        value={titulo}
+        onChange={(e) => setTitulo(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+        disabled={isPending}
         style={{
           flex: 1,
           padding: '12px 16px',
@@ -22,22 +34,23 @@ export default function IdeaForm({ value, onChange, onSubmit }: Props) {
         }}
       />
       <button
-        onClick={onSubmit}
+        onClick={handleSubmit}
+        disabled={isPending}
         style={{
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
           padding: '12px 20px',
-          backgroundColor: '#3b82f6',
+          backgroundColor: isPending ? '#93c5fd' : '#3b82f6',
           color: '#fff',
           border: 'none',
           borderRadius: '8px',
           fontSize: '14px',
           fontWeight: 600,
-          cursor: 'pointer',
+          cursor: isPending ? 'not-allowed' : 'pointer',
         }}
       >
-        ✈ Publicar
+        ✈ {isPending ? 'Publicando...' : 'Publicar'}
       </button>
     </div>
   );
